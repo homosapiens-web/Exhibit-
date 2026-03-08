@@ -1,0 +1,117 @@
+import React from 'react';
+import { Gamepad2, Swords, Keyboard, ExternalLink, Sparkles, ChevronRight } from 'lucide-react';
+
+const GameCard = ({ title, description, url, icon: Icon, colorTheme, tags }) => {
+  return (
+    <div className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-slate-800/50 border border-slate-700 p-6 transition-all duration-300 hover:bg-slate-800 hover:border-slate-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-slate-900/50">
+      {/* Background Gradient Accent */}
+      <div className={`absolute -right-20 -top-20 h-40 w-40 rounded-full blur-3xl opacity-20 transition-opacity duration-300 group-hover:opacity-40 ${colorTheme}`}></div>
+
+      <div>
+        <div className="mb-4 flex items-center justify-between">
+          <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 border border-slate-700 shadow-inner`}>
+            <Icon className={`h-6 w-6 ${colorTheme.replace('bg-', 'text-').replace('from-', 'text-')}`} />
+          </div>
+          <span className="flex items-center rounded-full bg-slate-900/80 px-3 py-1 text-xs font-medium text-slate-400 border border-slate-700/50 backdrop-blur-sm">
+            Web Game
+          </span>
+        </div>
+        
+        <h3 className="mb-2 text-2xl font-bold tracking-tight text-white">{title}</h3>
+        <p className="mb-6 text-sm leading-relaxed text-slate-400 line-clamp-3">
+          {description}
+        </p>
+
+        <div className="mb-6 flex flex-wrap gap-2">
+          {tags.map((tag, index) => (
+            <span key={index} className="rounded-md bg-slate-700/30 px-2.5 py-1 text-xs font-medium text-slate-300 border border-slate-600/30">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`inline-flex items-center justify-center gap-2 w-full rounded-xl bg-gradient-to-r ${colorTheme} px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:opacity-90 active:scale-[0.98] shadow-lg`}
+      >
+        <span>開始遊玩</span>
+        <ExternalLink className="h-4 w-4" />
+      </a>
+    </div>
+  );
+};
+
+export default function App() {
+  const games = [
+    {
+      title: 'Wordle 無限版',
+      description: '經典猜字遊戲的無限挑戰版本！不受每日一次的限制，隨時隨地考驗你的英文字彙量與邏輯推演能力。準備好挑戰你的最高連勝紀錄了嗎？',
+      url: 'https://homosapiens-web.github.io/Infinite-wordle/',
+      icon: Keyboard,
+      colorTheme: 'from-emerald-500 to-green-600',
+      tags: ['益智', '文字遊戲', '休閒']
+    },
+    {
+      title: '地牢傳說',
+      description: '踏入深邃未知的地牢，面對各種強大的怪物與挑戰。升級你的裝備，提升實力，並在排行榜上留下屬於你的傳奇英雄名字！',
+      url: 'https://homosapiens-web.github.io/rpggame-ranking/',
+      icon: Swords,
+      colorTheme: 'from-purple-500 to-indigo-600',
+      tags: ['RPG', '角色扮演', '排行榜']
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-200 selection:bg-indigo-500/30 font-sans">
+      {/* Header / Hero Section */}
+      <header className="relative overflow-hidden border-b border-slate-800 bg-slate-900/50 pt-24 pb-16 lg:pt-32 lg:pb-24">
+        {/* Abstract Background Shapes */}
+        <div className="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6">
+          <div className="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20" style={{ clipPath: 'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)' }}></div>
+        </div>
+
+        <div className="mx-auto max-w-5xl px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-sm font-medium text-indigo-300 mb-6 backdrop-blur-sm">
+            <Sparkles className="h-4 w-4" />
+            <span>個人遊戲開發作品集</span>
+          </div>
+          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl mb-6">
+            探索我的<span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">遊戲世界</span>
+          </h1>
+          <p className="mx-auto max-w-2xl text-lg leading-8 text-slate-400">
+            這裡展示了我獨立開發的網頁遊戲作品。從燒腦的文字解謎到刺激的地牢探險，點擊下方卡片即可直接在瀏覽器中遊玩！
+          </p>
+        </div>
+      </header>
+
+      {/* Main Content - Games Grid */}
+      <main className="mx-auto max-w-5xl px-6 py-16 lg:px-8 lg:py-24">
+        <div className="flex items-center gap-3 mb-10">
+          <Gamepad2 className="h-8 w-8 text-indigo-400" />
+          <h2 className="text-3xl font-bold text-white">精選遊戲</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">
+          {games.map((game, index) => (
+            <GameCard key={index} {...game} />
+          ))}
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-slate-800 mt-auto py-8">
+        <div className="mx-auto max-w-5xl px-6 text-center text-sm text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p>© {new Date().getFullYear()} My Game Studio. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+             <span className="flex items-center gap-1 hover:text-slate-300 cursor-pointer transition-colors">
+               Powered by React & Tailwind
+             </span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
