@@ -24,7 +24,7 @@
             <div class="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
         </div>
 
-        <div class="mx-auto max-w-5xl px-6 lg:px-8 text-center">
+        <div class="mx-auto max-w-6xl px-6 lg:px-8 text-center">
             <div class="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-sm font-medium text-indigo-300 mb-6 backdrop-blur-sm">
                 <i data-lucide="sparkles" class="h-4 w-4"></i>
                 <span>個人遊戲開發作品集</span>
@@ -33,47 +33,41 @@
                 探索我的<span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">遊戲世界</span>
             </h1>
             <p class="mx-auto max-w-2xl text-lg leading-8 text-slate-400">
-                這裡展示了我獨立開發的網頁遊戲作品。從燒腦的文字解謎到刺激的地牢探險，點擊下方卡片即可直接在瀏覽器中遊玩！
+                這裡展示了我獨立開發的網頁遊戲作品。從燒腦的文字解謎、刺激的地牢探險，到輕鬆的挖礦經營，點擊下方卡片即可直接在瀏覽器中遊玩！
             </p>
         </div>
     </header>
 
     <!-- Main Content - Games Grid -->
-    <main class="mx-auto max-w-5xl px-6 py-16 lg:px-8 lg:py-24 flex-grow w-full">
+    <!-- 注意這裡的 class 調整了 lg:grid-cols-3，讓電腦版可以一行顯示三個 -->
+    <main class="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-24 flex-grow w-full">
         <div class="flex items-center gap-3 mb-10">
             <i data-lucide="gamepad-2" class="h-8 w-8 text-indigo-400"></i>
             <h2 class="text-3xl font-bold text-white">精選遊戲</h2>
         </div>
         
-        <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
             
             <!-- Game Card 1: Wordle 無限版 -->
             <div class="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-slate-800/50 border border-slate-700 p-6 transition-all duration-300 hover:bg-slate-800 hover:border-slate-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-slate-900/50">
-                <!-- Hover 背景漸層光暈 -->
                 <div class="absolute -right-20 -top-20 h-40 w-40 rounded-full blur-3xl opacity-20 transition-opacity duration-300 group-hover:opacity-40 bg-emerald-500"></div>
-
                 <div>
                     <div class="mb-4 flex items-center justify-between relative z-10">
                         <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 border border-slate-700 shadow-inner">
                             <i data-lucide="keyboard" class="h-6 w-6 text-emerald-500"></i>
                         </div>
-                        <span class="flex items-center rounded-full bg-slate-900/80 px-3 py-1 text-xs font-medium text-slate-400 border border-slate-700/50 backdrop-blur-sm">
-                            Web Game
-                        </span>
+                        <span class="flex items-center rounded-full bg-slate-900/80 px-3 py-1 text-xs font-medium text-slate-400 border border-slate-700/50 backdrop-blur-sm">Web Game</span>
                     </div>
-                    
                     <h3 class="mb-2 text-2xl font-bold tracking-tight text-white relative z-10">Wordle 無限版</h3>
                     <p class="mb-6 text-sm leading-relaxed text-slate-400 relative z-10">
                         經典猜字遊戲的無限挑戰版本！不受每日一次的限制，隨時隨地考驗你的英文字彙量與邏輯推演能力。準備好挑戰你的最高連勝紀錄了嗎？
                     </p>
-
                     <div class="mb-6 flex flex-wrap gap-2 relative z-10">
                         <span class="rounded-md bg-slate-700/30 px-2.5 py-1 text-xs font-medium text-slate-300 border border-slate-600/30">益智</span>
                         <span class="rounded-md bg-slate-700/30 px-2.5 py-1 text-xs font-medium text-slate-300 border border-slate-600/30">文字遊戲</span>
                         <span class="rounded-md bg-slate-700/30 px-2.5 py-1 text-xs font-medium text-slate-300 border border-slate-600/30">休閒</span>
                     </div>
                 </div>
-
                 <a href="https://homosapiens-web.github.io/Infinite-wordle/" target="_blank" rel="noopener noreferrer" 
                    class="relative z-10 inline-flex items-center justify-center gap-2 w-full rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:opacity-90 active:scale-[0.98] shadow-lg">
                     <span>開始遊玩</span>
@@ -83,33 +77,53 @@
 
             <!-- Game Card 2: 地牢傳說 -->
             <div class="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-slate-800/50 border border-slate-700 p-6 transition-all duration-300 hover:bg-slate-800 hover:border-slate-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-slate-900/50">
-                <!-- Hover 背景漸層光暈 -->
                 <div class="absolute -right-20 -top-20 h-40 w-40 rounded-full blur-3xl opacity-20 transition-opacity duration-300 group-hover:opacity-40 bg-purple-500"></div>
-
                 <div>
                     <div class="mb-4 flex items-center justify-between relative z-10">
                         <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 border border-slate-700 shadow-inner">
                             <i data-lucide="swords" class="h-6 w-6 text-purple-400"></i>
                         </div>
-                        <span class="flex items-center rounded-full bg-slate-900/80 px-3 py-1 text-xs font-medium text-slate-400 border border-slate-700/50 backdrop-blur-sm">
-                            Web Game
-                        </span>
+                        <span class="flex items-center rounded-full bg-slate-900/80 px-3 py-1 text-xs font-medium text-slate-400 border border-slate-700/50 backdrop-blur-sm">Web Game</span>
                     </div>
-                    
                     <h3 class="mb-2 text-2xl font-bold tracking-tight text-white relative z-10">地牢傳說</h3>
                     <p class="mb-6 text-sm leading-relaxed text-slate-400 relative z-10">
                         踏入深邃未知的地牢，面對各種強大的怪物與挑戰。升級你的裝備，提升實力，並在排行榜上留下屬於你的傳奇英雄名字！
                     </p>
-
                     <div class="mb-6 flex flex-wrap gap-2 relative z-10">
                         <span class="rounded-md bg-slate-700/30 px-2.5 py-1 text-xs font-medium text-slate-300 border border-slate-600/30">RPG</span>
                         <span class="rounded-md bg-slate-700/30 px-2.5 py-1 text-xs font-medium text-slate-300 border border-slate-600/30">角色扮演</span>
                         <span class="rounded-md bg-slate-700/30 px-2.5 py-1 text-xs font-medium text-slate-300 border border-slate-600/30">排行榜</span>
                     </div>
                 </div>
-
                 <a href="https://homosapiens-web.github.io/rpggame-ranking/" target="_blank" rel="noopener noreferrer" 
                    class="relative z-10 inline-flex items-center justify-center gap-2 w-full rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:opacity-90 active:scale-[0.98] shadow-lg">
+                    <span>開始遊玩</span>
+                    <i data-lucide="external-link" class="h-4 w-4"></i>
+                </a>
+            </div>
+
+            <!-- Game Card 3: 礦工傳說 (新增的遊戲) -->
+            <div class="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-slate-800/50 border border-slate-700 p-6 transition-all duration-300 hover:bg-slate-800 hover:border-slate-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-slate-900/50">
+                <div class="absolute -right-20 -top-20 h-40 w-40 rounded-full blur-3xl opacity-20 transition-opacity duration-300 group-hover:opacity-40 bg-amber-500"></div>
+                <div>
+                    <div class="mb-4 flex items-center justify-between relative z-10">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 border border-slate-700 shadow-inner">
+                            <i data-lucide="pickaxe" class="h-6 w-6 text-amber-500"></i>
+                        </div>
+                        <span class="flex items-center rounded-full bg-slate-900/80 px-3 py-1 text-xs font-medium text-slate-400 border border-slate-700/50 backdrop-blur-sm">Web Game</span>
+                    </div>
+                    <h3 class="mb-2 text-2xl font-bold tracking-tight text-white relative z-10">礦工傳說</h3>
+                    <p class="mb-6 text-sm leading-relaxed text-slate-400 relative z-10">
+                        深入地底挖掘稀有礦石，升級你的挖礦設備，成為最富有的礦業大亨！探索未知的地層，發掘隱藏在深處的無盡寶藏。
+                    </p>
+                    <div class="mb-6 flex flex-wrap gap-2 relative z-10">
+                        <span class="rounded-md bg-slate-700/30 px-2.5 py-1 text-xs font-medium text-slate-300 border border-slate-600/30">放置</span>
+                        <span class="rounded-md bg-slate-700/30 px-2.5 py-1 text-xs font-medium text-slate-300 border border-slate-600/30">模擬經營</span>
+                        <span class="rounded-md bg-slate-700/30 px-2.5 py-1 text-xs font-medium text-slate-300 border border-slate-600/30">休閒</span>
+                    </div>
+                </div>
+                <a href="https://homosapiens-web.github.io/Miner-legend-/" target="_blank" rel="noopener noreferrer" 
+                   class="relative z-10 inline-flex items-center justify-center gap-2 w-full rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:opacity-90 active:scale-[0.98] shadow-lg">
                     <span>開始遊玩</span>
                     <i data-lucide="external-link" class="h-4 w-4"></i>
                 </a>
@@ -120,7 +134,7 @@
 
     <!-- Footer -->
     <footer class="border-t border-slate-800 mt-auto py-8">
-        <div class="mx-auto max-w-5xl px-6 text-center text-sm text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="mx-auto max-w-7xl px-6 text-center text-sm text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-4">
             <p id="copyright-year">© 2024 My Game Studio. All rights reserved.</p>
             <div class="flex items-center gap-4">
                 <span class="flex items-center gap-1 hover:text-slate-300 cursor-pointer transition-colors">
