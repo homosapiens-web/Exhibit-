@@ -8,95 +8,202 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: { extend: { fontFamily: { sans: ['"Noto Sans TC"', 'sans-serif'], serif: ['"Noto Serif TC"', 'serif'] } } }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@300;400&family=Noto+Sans+TC:wght@300;400;500&family=Noto+Serif+TC:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #09090b; color: #fafafa; }
+        /* ── DARK (default) ── */
+        :root {
+            --bg:        #17161c;
+            --surface:   rgba(34,32,42,0.78);
+            --border:    rgba(255,255,255,0.09);
+            --border2:   rgba(255,255,255,0.16);
+            --text:      #f0ede8;
+            --muted:     #9e9a94;
+            --muted2:    #6a6660;
+            --gold:      #c8a96e;
+            --gold2:     #e8c98a;
+            --cream:     #f0ede8;
+            --sage:      #8aab96;
+            --dustyrose: #c49090;
+            --sky:       #7aaec8;
+            --glow-gold: rgba(200,169,110,0.10);
+            --glow-sage: rgba(138,171,150,0.08);
+            --nav-bg:    rgba(23,22,28,0.88);
+        }
+        /* ── LIGHT ── */
+        html.light {
+            --bg:        #f5f2ec;
+            --surface:   rgba(255,252,246,0.90);
+            --border:    rgba(0,0,0,0.08);
+            --border2:   rgba(0,0,0,0.14);
+            --text:      #1a1814;
+            --muted:     #6b6660;
+            --muted2:    #9e9a94;
+            --gold:      #a8822e;
+            --gold2:     #c8a24e;
+            --cream:     #1a1814;
+            --sage:      #4a7a5a;
+            --dustyrose: #9e5858;
+            --sky:       #3a7a9e;
+            --glow-gold: rgba(168,130,46,0.08);
+            --glow-sage: rgba(74,122,90,0.07);
+            --nav-bg:    rgba(245,242,236,0.92);
+        }
 
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+            font-weight: 300;
+            font-size: 1rem;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.45s ease, color 0.45s ease;
+        }
+        body::before {
+            content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            opacity: 0.022;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
         #canvas-bg { position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:0; pointer-events:none; }
 
+        /* ── Nav ── */
         nav {
             position:fixed; width:100%; z-index:50;
-            background:rgba(9,9,11,0.8);
-            backdrop-filter:blur(16px);
-            border-bottom:1px solid rgba(82,82,91,0.25);
+            background: var(--nav-bg);
+            backdrop-filter: blur(24px) saturate(180%);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.45s ease, border-color 0.45s ease;
         }
-
-        .bento-card {
-            position:relative;
-            background:rgba(24,24,27,0.6);
-            border:1px solid rgba(63,63,70,0.5);
-            backdrop-filter:blur(12px);
-            transition:background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+        .nav-link {
+            color: var(--muted); font-size:0.78rem; letter-spacing:0.09em;
+            text-transform:uppercase; font-weight:400; transition:color 0.25s;
         }
+        .nav-link:hover { color: var(--cream); }
 
-        .bento-card.c-blue:hover   { border-color:rgba(99,102,241,0.6);  box-shadow:0 16px 40px -12px rgba(99,102,241,0.22);  background:rgba(30,30,40,0.7); }
-        .bento-card.c-purple:hover { border-color:rgba(168,85,247,0.6);  box-shadow:0 16px 40px -12px rgba(168,85,247,0.22);  background:rgba(30,25,40,0.7); }
-        .bento-card.c-teal:hover   { border-color:rgba(20,184,166,0.6);  box-shadow:0 16px 40px -12px rgba(20,184,166,0.20);  background:rgba(15,30,28,0.7); }
-        .bento-card.c-amber:hover  { border-color:rgba(245,158,11,0.6);  box-shadow:0 16px 40px -12px rgba(245,158,11,0.18);  background:rgba(30,25,15,0.7); }
-        .bento-card.c-rose:hover   { border-color:rgba(244,63,94,0.6);   box-shadow:0 16px 40px -12px rgba(244,63,94,0.20);   background:rgba(30,15,20,0.7); }
-        .bento-card.c-green:hover  { border-color:rgba(34,197,94,0.6);   box-shadow:0 16px 40px -12px rgba(34,197,94,0.18);   background:rgba(15,28,20,0.7); }
-
-        .awarded-card {
-            background:linear-gradient(135deg,rgba(99,102,241,0.12) 0%,rgba(168,85,247,0.10) 100%);
-            border:1px solid rgba(99,102,241,0.35);
+        #theme-btn {
+            display:flex; align-items:center; justify-content:center;
+            width:2rem; height:2rem; border-radius:50%;
+            border:1px solid var(--border2); color:var(--muted);
+            background:transparent; cursor:pointer;
+            transition:border-color 0.25s, color 0.25s;
         }
-        .awarded-card:hover { border-color:rgba(99,102,241,0.65); box-shadow:0 16px 40px -12px rgba(99,102,241,0.28); }
+        #theme-btn:hover { border-color:var(--gold); color:var(--gold); }
+
+        /* ── Cards ── */
+        .card {
+            position:relative; background:var(--surface);
+            border:1px solid var(--border); backdrop-filter:blur(16px);
+            border-radius:1.5rem;
+            transition:border-color 0.4s, box-shadow 0.4s, background 0.45s, transform 0.12s;
+            overflow:hidden;
+        }
+        .card::before {
+            content:''; position:absolute; inset:0; border-radius:inherit;
+            opacity:0; transition:opacity 0.4s; pointer-events:none;
+        }
+        .card-gold::before  { background:radial-gradient(ellipse at top left,var(--glow-gold),transparent 65%); }
+        .card-sage::before  { background:radial-gradient(ellipse at top left,var(--glow-sage),transparent 65%); }
+        .card-rose::before  { background:radial-gradient(ellipse at top left,rgba(196,144,144,0.08),transparent 65%); }
+        .card-sky::before   { background:radial-gradient(ellipse at top left,rgba(122,174,200,0.08),transparent 65%); }
+        .card:hover::before { opacity:1; }
+        .card-gold:hover    { border-color:rgba(200,169,110,0.30); box-shadow:0 24px 64px -16px rgba(200,169,110,0.12); }
+        .card-sage:hover    { border-color:rgba(138,171,150,0.30); box-shadow:0 24px 64px -16px rgba(138,171,150,0.12); }
+        .card-rose:hover    { border-color:rgba(196,144,144,0.30); box-shadow:0 24px 64px -16px rgba(196,144,144,0.10); }
+        .card-sky:hover     { border-color:rgba(122,174,200,0.30); box-shadow:0 24px 64px -16px rgba(122,174,200,0.10); }
+        .card-neutral:hover { border-color:var(--border2); }
+        .card-featured {
+            background:linear-gradient(135deg,rgba(200,169,110,0.07),rgba(34,32,42,0) 60%);
+            border:1px solid rgba(200,169,110,0.18);
+        }
+        .card-featured:hover { border-color:rgba(200,169,110,0.38); box-shadow:0 24px 64px -16px rgba(200,169,110,0.12); }
+
+        /* ── Tags ── */
+        .tag {
+            display:inline-flex; align-items:center;
+            font-size:0.65rem; letter-spacing:0.08em; text-transform:uppercase;
+            padding:0.24rem 0.8rem; border-radius:9999px; border:1px solid;
+            font-weight:500; font-family:'DM Mono',monospace; white-space:nowrap;
+        }
+        .tag-gold   { background:rgba(200,169,110,0.10); border-color:rgba(200,169,110,0.28); color:var(--gold2); }
+        .tag-sage   { background:rgba(138,171,150,0.10); border-color:rgba(138,171,150,0.28); color:var(--sage); }
+        .tag-rose   { background:rgba(196,144,144,0.10); border-color:rgba(196,144,144,0.28); color:var(--dustyrose); }
+        .tag-sky    { background:rgba(122,174,200,0.10); border-color:rgba(122,174,200,0.28); color:var(--sky); }
+        .tag-ghost  { background:rgba(128,128,128,0.06); border-color:var(--border); color:var(--muted); }
+
+        /* ── Icon boxes ── */
+        .ib { display:flex; align-items:center; justify-content:center; border-radius:0.85rem; border:1px solid; width:2.6rem; height:2.6rem; }
+        .ib-gold { background:rgba(200,169,110,0.12); border-color:rgba(200,169,110,0.28); color:var(--gold2); }
+        .ib-sage { background:rgba(138,171,150,0.12); border-color:rgba(138,171,150,0.28); color:var(--sage); }
+        .ib-rose { background:rgba(196,144,144,0.12); border-color:rgba(196,144,144,0.28); color:var(--dustyrose); }
+        .ib-sky  { background:rgba(122,174,200,0.12); border-color:rgba(122,174,200,0.28); color:var(--sky); }
+
+        .sec-num { font-family:'DM Mono',monospace; font-size:0.78rem; letter-spacing:0.14em; color:var(--gold); font-weight:400; }
+
+        .hero-name {
+            background:linear-gradient(120deg,var(--cream) 0%,var(--gold2) 45%,var(--cream) 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            background-clip:text; background-size:200% 100%;
+            animation:shimmer 7s ease-in-out infinite;
+        }
+        @keyframes shimmer { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+
+        .award-badge {
+            display:inline-flex; align-items:center; gap:0.4rem;
+            font-size:0.62rem; letter-spacing:0.09em; text-transform:uppercase;
+            color:var(--gold); font-family:'DM Mono',monospace;
+            padding:0.22rem 0.75rem; border-radius:9999px;
+            background:rgba(200,169,110,0.07); border:1px solid rgba(200,169,110,0.22);
+        }
+        .link-gold {
+            color:var(--gold); text-decoration:none;
+            display:inline-flex; align-items:center; gap:0.4rem;
+            font-size:0.9rem; font-weight:500; transition:color 0.2s;
+        }
+        .link-gold:hover { color:var(--gold2); }
+
+        .btn-primary {
+            display:inline-flex; align-items:center; gap:0.5rem;
+            padding:0.85rem 2.2rem; background:var(--cream); color:var(--bg);
+            font-size:0.88rem; font-weight:600; border-radius:9999px;
+            letter-spacing:0.02em; transition:opacity 0.2s, transform 0.15s;
+        }
+        .btn-primary:hover { opacity:0.88; transform:translateY(-1px); }
+        .btn-ghost {
+            display:inline-flex; align-items:center; gap:0.5rem;
+            padding:0.85rem 2.2rem; border:1px solid var(--border2);
+            color:var(--muted); font-size:0.88rem; font-weight:400;
+            border-radius:9999px; letter-spacing:0.02em; transition:border-color 0.25s,color 0.25s;
+        }
+        .btn-ghost:hover { border-color:rgba(200,169,110,0.45); color:var(--gold2); }
 
         .writing-card {
-            background:linear-gradient(135deg,rgba(244,63,94,0.07) 0%,rgba(168,85,247,0.07) 100%);
-            border:1px solid rgba(168,85,247,0.25);
-            transition:border-color 0.35s ease, box-shadow 0.35s ease;
+            background:linear-gradient(135deg,rgba(200,169,110,0.06),rgba(196,144,144,0.04) 100%);
+            border:1px solid rgba(200,169,110,0.16); border-radius:1.5rem;
+            transition:border-color 0.4s,box-shadow 0.4s,transform 0.12s;
         }
-        .writing-card:hover { border-color:rgba(168,85,247,0.6); box-shadow:0 16px 40px -12px rgba(168,85,247,0.22); }
+        .writing-card:hover { border-color:rgba(200,169,110,0.36); box-shadow:0 24px 64px -16px rgba(200,169,110,0.12); }
 
-        .tag {
-            font-size:0.67rem; letter-spacing:0.05em; text-transform:uppercase;
-            padding:0.18rem 0.6rem; border-radius:9999px;
-            background:rgba(39,39,42,0.8); border:1px solid rgba(82,82,91,0.45);
-            color:#a1a1aa; font-weight:500;
-        }
-        .tag.t-blue   { background:rgba(99,102,241,0.14); border-color:rgba(99,102,241,0.4);  color:#a5b4fc; }
-        .tag.t-purple { background:rgba(168,85,247,0.14); border-color:rgba(168,85,247,0.4);  color:#d8b4fe; }
-        .tag.t-teal   { background:rgba(20,184,166,0.14); border-color:rgba(20,184,166,0.4);  color:#5eead4; }
-        .tag.t-amber  { background:rgba(245,158,11,0.14); border-color:rgba(245,158,11,0.4);  color:#fcd34d; }
-        .tag.t-rose   { background:rgba(244,63,94,0.14);  border-color:rgba(244,63,94,0.4);   color:#fda4af; }
-        .tag.t-green  { background:rgba(34,197,94,0.14);  border-color:rgba(34,197,94,0.4);   color:#86efac; }
-        .tag.t-indigo { background:rgba(99,102,241,0.18); border-color:rgba(99,102,241,0.5);  color:#818cf8; }
+        .dot-gold { background:var(--gold); }
+        .dot-sage { background:var(--sage); }
+        .dot-sky  { background:var(--sky); }
+        .dot-rose { background:var(--dustyrose); }
 
-        .icon-box {
-            display:flex; align-items:center; justify-content:center;
-            border-radius:0.75rem; border:1px solid; padding:0.55rem;
-        }
-        .icon-box.i-blue   { background:rgba(99,102,241,0.15); border-color:rgba(99,102,241,0.4);  color:#a5b4fc; }
-        .icon-box.i-purple { background:rgba(168,85,247,0.15); border-color:rgba(168,85,247,0.4);  color:#d8b4fe; }
-        .icon-box.i-teal   { background:rgba(20,184,166,0.15); border-color:rgba(20,184,166,0.4);  color:#5eead4; }
-        .icon-box.i-amber  { background:rgba(245,158,11,0.15); border-color:rgba(245,158,11,0.4);  color:#fcd34d; }
-        .icon-box.i-rose   { background:rgba(244,63,94,0.15);  border-color:rgba(244,63,94,0.4);   color:#fda4af; }
-        .icon-box.i-green  { background:rgba(34,197,94,0.15);  border-color:rgba(34,197,94,0.4);   color:#86efac; }
-        .icon-box.i-indigo { background:rgba(99,102,241,0.2);  border-color:rgba(99,102,241,0.5);  color:#818cf8; }
+        .sec-divider { border-color:var(--border); }
 
-        .sec-num {
-            background:linear-gradient(135deg,#6366f1,#38bdf8);
-            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-            background-clip:text; font-weight:800; font-size:0.9rem;
-        }
-        .hero-grad {
-            background:linear-gradient(90deg,#818cf8 0%,#a78bfa 40%,#38bdf8 100%);
-            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-        }
-        .sec-divider { border-color:rgba(63,63,70,0.4); }
-
-        .reveal { opacity:0; transform:translateY(22px); transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1),transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+        .reveal { opacity:0; transform:translateY(32px); transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1); }
         .reveal.visible { opacity:1; transform:none; }
 
-        ::-webkit-scrollbar { width:5px; }
-        ::-webkit-scrollbar-track { background:#09090b; }
-        ::-webkit-scrollbar-thumb { background:#3f3f46; border-radius:3px; }
+        .game-mini { display:flex; flex-direction:column; justify-content:space-between; min-height:190px; }
+
+        ::-webkit-scrollbar { width:4px; }
+        ::-webkit-scrollbar-track { background:var(--bg); }
+        ::-webkit-scrollbar-thumb { background:rgba(200,169,110,0.18); border-radius:2px; }
+
+        /* text helpers */
+        .body-t  { color:var(--muted); font-size:0.97rem; line-height:1.95; font-weight:300; }
+        .small-t { color:var(--muted); font-size:0.86rem; line-height:1.85; font-weight:300; }
+        .mono-t  { color:var(--muted2); font-size:0.7rem; font-family:'DM Mono',monospace; letter-spacing:0.07em; }
     </style>
 </head>
 <body class="antialiased min-h-screen">
@@ -105,431 +212,354 @@
 
 <!-- Nav -->
 <nav>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex justify-between items-center h-16">
-        <a href="#" class="font-serif text-base font-bold tracking-widest text-zinc-100">P.T. WU</a>
-        <div class="hidden md:flex gap-7 text-sm font-medium tracking-wide">
-            <a href="#tech"         class="text-zinc-500 hover:text-zinc-100 transition-colors">程式開發</a>
-            <a href="#humanities"   class="text-zinc-500 hover:text-zinc-100 transition-colors">探究研究</a>
-            <a href="#achievements" class="text-zinc-500 hover:text-zinc-100 transition-colors">榮譽經歷</a>
-            <a href="#writing"      class="text-zinc-500 hover:text-zinc-100 transition-colors">文學創作</a>
+    <div class="max-w-4xl mx-auto px-8 lg:px-14 flex justify-between items-center h-16">
+        <a href="#" class="font-serif text-sm font-semibold tracking-[0.22em] uppercase" style="color:var(--gold)">P.T. WU</a>
+        <div class="flex items-center gap-8">
+            <div class="hidden md:flex gap-8">
+                <a href="#humanities"   class="nav-link">探究研究</a>
+                <a href="#achievements" class="nav-link">榮譽經歷</a>
+                <a href="#tech"         class="nav-link">程式開發</a>
+                <a href="#writing"      class="nav-link">文學創作</a>
+            </div>
+            <button id="theme-btn" aria-label="切換明暗模式">
+                <i data-lucide="sun"  class="w-4 h-4 hidden" id="icon-sun"></i>
+                <i data-lucide="moon" class="w-4 h-4"        id="icon-moon"></i>
+            </button>
         </div>
     </div>
 </nav>
 
-<main class="relative z-10 max-w-6xl mx-auto px-6 lg:px-8">
+<main class="relative z-10 max-w-4xl mx-auto px-8 lg:px-14">
 
-    <!-- HERO -->
-    <section class="pt-40 pb-20 md:pt-52 md:pb-28 reveal">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-zinc-700 bg-zinc-900/60 text-zinc-400 text-xs tracking-widest mb-8 uppercase font-medium">
-            <span class="w-1.5 h-1.5 rounded-full" style="background:linear-gradient(135deg,#6366f1,#38bdf8)"></span>
-            薇閣高中 · 三年丙班
+    <!-- ═══ HERO ═══ -->
+    <section class="pt-52 pb-44 md:pt-64 md:pb-52 reveal">
+        <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border mb-14" style="border-color:var(--border2);background:rgba(128,128,128,0.05)">
+            <span class="w-1.5 h-1.5 rounded-full" style="background:var(--gold)"></span>
+            <span class="mono-t">薇閣高中 · 三年丙班</span>
         </div>
-        <h1 class="font-serif text-5xl md:text-7xl font-bold leading-[1.1] mb-6 tracking-tight">
-            <span class="text-zinc-100">吳霈彤</span><br>
-            <span class="hero-grad">Peitong Wu</span>
+        <h1 class="font-serif leading-[1.04] mb-12 tracking-tight">
+            <span class="block text-6xl md:text-8xl lg:text-9xl font-light mb-2" style="color:var(--muted)">吳霈彤</span>
+            <span class="hero-name block text-6xl md:text-8xl lg:text-9xl font-light">Peitong Wu</span>
         </h1>
-        <p class="text-zinc-400 text-lg md:text-xl leading-relaxed mb-10 font-light max-w-2xl">
+        <p class="mb-16 max-w-lg body-t" style="line-height:2.1">
             對遊戲設計與互動體驗有濃厚興趣，同時對社會人文現象保持好奇。從構思遊戲機制、與 AI 協作實現想法，到質性研究、文學創作，習慣跨領域地思考問題。
         </p>
-        <div class="flex flex-wrap gap-3">
-            <a href="#tech" class="inline-flex items-center px-5 py-2.5 bg-zinc-100 text-zinc-900 text-sm font-semibold rounded-full hover:bg-white transition-colors">
-                看作品 <i data-lucide="arrow-down" class="ml-2 h-4 w-4"></i>
-            </a>
-            <a href="#achievements" class="inline-flex items-center px-5 py-2.5 border border-zinc-700 text-zinc-300 text-sm font-medium rounded-full hover:border-indigo-500 hover:text-indigo-300 transition-colors">
-                榮譽與經歷
-            </a>
+        <div class="flex flex-wrap gap-4">
+            <a href="#humanities" class="btn-primary">看作品 <i data-lucide="arrow-down" class="w-4 h-4"></i></a>
+            <a href="#achievements" class="btn-ghost">榮譽與經歷</a>
         </div>
     </section>
 
-    <!-- 01 程式開發 -->
-    <section id="tech" class="pb-24 reveal">
-        <div class="flex items-center justify-between border-b sec-divider pb-5 mb-10">
-            <div class="flex items-center gap-4">
+    <!-- ═══ 01 探究與研究 ═══ -->
+    <section id="humanities" class="pb-48 reveal">
+        <div class="flex items-center justify-between border-b sec-divider pb-7 mb-20">
+            <div class="flex items-center gap-5">
                 <span class="sec-num">01</span>
-                <h2 class="font-serif text-2xl md:text-3xl font-bold text-zinc-100">程式開發</h2>
+                <h2 class="font-serif text-2xl md:text-3xl font-light" style="color:var(--cream)">探究與研究</h2>
             </div>
-            <span class="hidden md:block text-zinc-600 font-mono text-xs uppercase tracking-widest">Game Design & Dev</span>
+            <span class="hidden md:block mono-t uppercase tracking-widest">Inquiry &amp; Research</span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
-
-            <!-- Word Arena 大卡 -->
-            <div class="bento-card c-blue rounded-2xl p-7 lg:col-span-2 flex flex-col gap-6">
-                <div>
-                    <div class="flex flex-wrap gap-2 mb-5">
-                        <span class="tag t-blue">Game Design</span>
-                        <span class="tag t-teal">Web</span>
-                        <span class="tag t-indigo">AI 協作</span>
-                    </div>
-                    <h3 class="font-serif text-xl font-bold text-zinc-100 mb-3">Word Arena — 網頁文字競技遊戲</h3>
-                    <p class="text-zinc-400 text-sm leading-relaxed">
-                        從零構思遊戲規則與對戰機制，與 AI 協作將想法轉化為實際運行的網頁遊戲。透過反覆遊玩、測試、調整玩法平衡與體驗，完成並上線於 GitHub Pages。
-                    </p>
+        <div class="flex flex-col gap-8">
+            <!-- AI 文學大卡 -->
+            <div class="card card-gold p-12 flex flex-col gap-9">
+                <div class="flex flex-wrap gap-2">
+                    <span class="tag tag-gold">Generative AI</span>
+                    <span class="tag tag-rose">Literature</span>
+                    <span class="tag tag-ghost">Prompt Engineering</span>
                 </div>
-                <a href="https://homosapiens-web.github.io/word-arena2/" target="_blank"
-                   class="inline-flex items-center gap-2 text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors group/lnk w-fit">
-                    <i data-lucide="swords" class="w-4 h-4"></i>
-                    玩 Word Arena
-                    <i data-lucide="arrow-up-right" class="w-4 h-4 group-hover/lnk:translate-x-0.5 group-hover/lnk:-translate-y-0.5 transition-transform"></i>
+                <div>
+                    <h3 class="font-serif text-2xl font-medium mb-6" style="color:var(--cream)">生成式 AI 在文學創作的應用研究</h3>
+                    <p class="body-t">以古詩詞與小說創作為題，深度測試 GPT-4 與 DeepSeek 等大型語言模型。透過建構角色設定模板與詠物詩格律等精準提示詞，分析 AI 在文字創作上的邏輯限制與潛力。同時架設生成式 AI 應用網站，整合研究成果並公開展示，展現對新興科技的批判性思考。</p>
+                </div>
+                <div class="pt-8 border-t" style="border-color:var(--border)">
+                    <p class="mono-t uppercase mb-6">自主學習歷程 — 薇閣高中</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-5">
+                        <div class="flex items-start gap-3"><span class="mt-2.5 w-1 h-1 rounded-full shrink-0 dot-gold"></span><span class="small-t">架設 AI 應用網站，建立古詩詞專題</span></div>
+                        <div class="flex items-start gap-3"><span class="mt-2.5 w-1 h-1 rounded-full shrink-0 dot-gold"></span><span class="small-t">ChatGPT 創作唐詩、宋詞實驗記錄</span></div>
+                        <div class="flex items-start gap-3"><span class="mt-2.5 w-1 h-1 rounded-full shrink-0 dot-sage"></span><span class="small-t">設計小說角色模板，AI 協作建構世界觀</span></div>
+                        <div class="flex items-start gap-3"><span class="mt-2.5 w-1 h-1 rounded-full shrink-0 dot-sage"></span><span class="small-t">比較 GPT-4 / GPT-3.5 大綱整理差異</span></div>
+                        <div class="flex items-start gap-3"><span class="mt-2.5 w-1 h-1 rounded-full shrink-0 dot-sky"></span><span class="small-t">教會體制世界設定實驗</span></div>
+                        <div class="flex items-start gap-3"><span class="mt-2.5 w-1 h-1 rounded-full shrink-0 dot-sky"></span><span class="small-t">整理 ChatGPT 設計小說劇情標準流程</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card card-featured p-10 flex flex-col justify-between gap-8">
+                    <div>
+                        <div class="flex flex-wrap gap-2 mb-7"><span class="award-badge"><i data-lucide="award" class="w-3 h-3"></i> Awarded</span><span class="tag tag-ghost">Geography</span></div>
+                        <h3 class="font-serif text-xl font-medium mb-5" style="color:var(--cream)">《北投硫穴記》<br>地景實察報告</h3>
+                        <p class="body-t">結合清代郁永河古文記載與現代地理實察，分析大屯火山群地貌變遷，深化對台灣地質景觀的跨時代理解。</p>
+                    </div>
+                    <div class="pt-6 border-t" style="border-color:rgba(200,169,110,0.14)">
+                        <p class="mono-t uppercase" style="color:var(--gold)">第四屆臺灣地質公園學會讀景比賽 得獎</p>
+                    </div>
+                </div>
+                <div class="card card-sky p-10 flex flex-col justify-between gap-8">
+                    <div>
+                        <div class="flex flex-wrap gap-2 mb-7"><span class="tag tag-sky">Reading Advocate</span><span class="tag tag-ghost">Curation</span></div>
+                        <h3 class="font-serif text-xl font-medium mb-5" style="color:var(--cream)">2024 閱讀代言人</h3>
+                        <p class="body-t">入選國立公共資訊圖書館「閱讀代言人」暑期營，歷經 3 天 2 夜培訓，修習閱讀策略、AI 科技應用、口語表達、資訊素養與策展實作，完成主題展策劃。</p>
+                    </div>
+                    <div class="pt-6 border-t" style="border-color:var(--border)">
+                        <p class="mono-t uppercase" style="color:var(--sky)">國立公共資訊圖書館 · 2024</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card card-sage p-10 flex flex-col gap-6">
+                    <div class="flex flex-wrap gap-2"><span class="tag tag-sage">Qualitative Research</span><span class="tag tag-ghost">Business</span></div>
+                    <div>
+                        <h3 class="font-serif text-xl font-medium mb-5" style="color:var(--cream)">貓咪咖啡廳經營策略分析</h3>
+                        <p class="body-t">實地質性訪談與觀察，比較北市兩間不同類型貓咖的客群輪廓、動物福利政策與商業模式，從社會現象中萃取商業洞察。</p>
+                    </div>
+                </div>
+                <div class="card card-neutral p-10 flex flex-col gap-9">
+                    <div class="pb-8 border-b" style="border-color:var(--border)">
+                        <div class="flex flex-wrap gap-2 mb-5"><span class="tag tag-rose">Fieldwork</span><span class="tag tag-ghost">History</span></div>
+                        <h3 class="font-serif text-lg font-medium mb-4" style="color:var(--cream)">北投溫泉史與經貿實察</h3>
+                        <p class="small-t">北投溪沿線地熱谷考察、參訪證交所與四四南村，深化台灣經濟發展與在地歷史的立體認知。</p>
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap gap-2 mb-5"><span class="tag tag-gold">Business Strategy</span><span class="tag tag-ghost">Finance</span></div>
+                        <h3 class="font-serif text-lg font-medium mb-4" style="color:var(--cream)">企業策略與財報分析</h3>
+                        <p class="small-t">台大管理學院營隊，修習 MECE 分解法與金字塔邏輯。最終專案分析「Netflix 併購華納兄弟案」，結合財務數據評估收購損益。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ 02 榮譽與經歷 ═══ -->
+    <section id="achievements" class="pb-48 reveal">
+        <div class="flex items-center justify-between border-b sec-divider pb-7 mb-20">
+            <div class="flex items-center gap-5">
+                <span class="sec-num">02</span>
+                <h2 class="font-serif text-2xl md:text-3xl font-light" style="color:var(--cream)">榮譽與經歷</h2>
+            </div>
+            <span class="hidden md:block mono-t uppercase tracking-widest">Honors &amp; Activities</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="card card-gold p-10">
+                <div class="flex items-center gap-3 mb-10"><div class="ib ib-gold"><i data-lucide="trophy" class="w-4 h-4"></i></div><h3 class="font-medium" style="color:var(--cream)">競賽與活動</h3></div>
+                <ul class="space-y-9">
+                    <li class="flex gap-5"><div class="mt-2.5 w-1.5 h-1.5 rounded-full shrink-0 dot-gold"></div><div><h4 class="font-medium mb-2" style="color:var(--cream)">聯合盃作文大賽（臺北市初賽）</h4><p class="small-t">第18屆 高中職組 佳作</p></div></li>
+                    <li class="flex gap-5"><div class="mt-2.5 w-1.5 h-1.5 rounded-full shrink-0 dot-sage"></div><div><h4 class="font-medium mb-2" style="color:var(--cream)">臺灣地質公園學會讀景比賽</h4><p class="small-t">第四屆 參賽作品《走進北投硫穴記》得獎</p></div></li>
+                    <li class="flex gap-5"><div class="mt-2.5 w-1.5 h-1.5 rounded-full shrink-0 dot-sky"></div><div><h4 class="font-medium mb-2" style="color:var(--cream)">臺灣大學管理學院營隊</h4><p class="small-t">財務報表分析、MECE 金字塔邏輯、商業個案分析</p></div></li>
+                    <li class="flex gap-5"><div class="mt-2.5 w-1.5 h-1.5 rounded-full shrink-0 dot-rose"></div><div><h4 class="font-medium mb-2" style="color:var(--cream)">國立公共資訊圖書館 閱讀代言人</h4><p class="small-t">2024 暑期培訓營 · 策展實作 · AI 科技應用 · 口語表達</p></div></li>
+                </ul>
+            </div>
+            <div class="card card-sage p-10">
+                <div class="flex items-center gap-3 mb-10"><div class="ib ib-sage"><i data-lucide="users" class="w-4 h-4"></i></div><h3 class="font-medium" style="color:var(--cream)">班級職務</h3></div>
+                <div class="space-y-9">
+                    <div class="pb-9 border-b" style="border-color:var(--border)">
+                        <div class="flex justify-between items-start mb-3"><h4 class="font-medium" style="color:var(--cream)">國語文小老師</h4><span class="mono-t shrink-0 ml-4">113 上</span></div>
+                        <p class="small-t">協助教務與班級語文學習進度，結合溝通協調與文字素養。</p>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-start mb-3"><h4 class="font-medium" style="color:var(--cream)">衛生股長</h4><span class="mono-t shrink-0 ml-4">113 下</span></div>
+                        <p class="small-t">管理班級環境整潔，培養責任心與組織協調能力。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ 03 程式開發 ═══ -->
+    <section id="tech" class="pb-48 reveal">
+        <div class="flex items-center justify-between border-b sec-divider pb-7 mb-20">
+            <div class="flex items-center gap-5">
+                <span class="sec-num">03</span>
+                <h2 class="font-serif text-2xl md:text-3xl font-light" style="color:var(--cream)">程式開發</h2>
+            </div>
+            <span class="hidden md:block mono-t uppercase tracking-widest">Game Design &amp; Dev</span>
+        </div>
+        <div class="flex flex-col gap-8">
+            <!-- Word Arena 大卡 -->
+            <div class="card card-sky p-12 flex flex-col gap-9">
+                <div class="flex flex-wrap gap-2"><span class="tag tag-sky">Game Design</span><span class="tag tag-sage">Web</span><span class="tag tag-ghost">AI 協作</span></div>
+                <div>
+                    <h3 class="font-serif text-2xl font-medium mb-6" style="color:var(--cream)">Word Arena — 網頁文字競技遊戲</h3>
+                    <p class="body-t">多人對戰文字競技遊戲。玩家在限時內利用手中字母拼出單字，累積分數擊敗對手。從零構思遊戲規則與對戰機制，設計玩家手牌管理、即時計分與勝負判斷系統，與 AI 協作將完整玩法邏輯轉化為可遊玩的網頁作品，上線於 GitHub Pages。</p>
+                </div>
+                <a href="https://homosapiens-web.github.io/word-arena2/" target="_blank" class="link-gold w-fit">
+                    <i data-lucide="swords" class="w-4 h-4"></i>玩 Word Arena<i data-lucide="arrow-up-right" class="w-4 h-4"></i>
                 </a>
             </div>
 
-            <!-- C++ 1A2B 大卡 -->
-            <div class="bento-card c-purple rounded-2xl p-7 lg:col-span-2 flex flex-col gap-6">
-                <div>
-                    <div class="flex flex-wrap gap-2 mb-5">
-                        <span class="tag t-purple">C++</span>
-                        <span class="tag t-rose">邏輯設計</span>
-                        <span class="tag t-indigo">AI 協作</span>
-                    </div>
-                    <h3 class="font-serif text-xl font-bold text-zinc-100 mb-3">1A2B 猜數字 — 邏輯遊戲實作</h3>
-                    <p class="text-zinc-400 text-sm leading-relaxed">
-                        設計遊戲核心邏輯與防呆規則，與 AI 協作以 C++ 實現。專注於邊界條件的思考與測試，確保各種非預期輸入都能被正確處理，體現對遊戲穩定性的要求。
-                    </p>
-                </div>
-                <span class="inline-flex items-center gap-2 text-sm text-zinc-600 w-fit">
-                    <i data-lucide="terminal" class="w-4 h-4"></i>
-                    Console Application
-                </span>
-            </div>
-
-            <!-- 礦工傳說 -->
-            <a href="https://homosapiens-web.github.io/Miner-legend-/" target="_blank"
-               class="bento-card c-amber rounded-2xl p-6 group flex flex-col justify-between h-48">
-                <div class="flex justify-between items-start">
-                    <div class="icon-box i-amber"><i data-lucide="pickaxe" class="w-5 h-5"></i></div>
-                    <i data-lucide="arrow-up-right" class="text-amber-400 w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
-                </div>
-                <div>
-                    <h3 class="font-bold text-zinc-100 mb-0.5">礦工傳說</h3>
-                    <p class="text-xs text-zinc-500">Miner Legend</p>
-                </div>
-            </a>
-
-            <!-- Wordle 無限版 -->
-            <a href="https://homosapiens-web.github.io/Infinite-wordle/" target="_blank"
-               class="bento-card c-teal rounded-2xl p-6 group flex flex-col justify-between h-48">
-                <div class="flex justify-between items-start">
-                    <div class="icon-box i-teal"><i data-lucide="spell-check" class="w-5 h-5"></i></div>
-                    <i data-lucide="arrow-up-right" class="text-teal-400 w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
-                </div>
-                <div>
-                    <h3 class="font-bold text-zinc-100 mb-0.5">Wordle 無限版</h3>
-                    <p class="text-xs text-zinc-500">Infinite Wordle</p>
-                </div>
-            </a>
-
-            <!-- Pixel Surviver -->
-            <a href="https://homosapiens-web.github.io/Pixel-s-6/" target="_blank"
-               class="bento-card c-rose rounded-2xl p-6 group flex flex-col justify-between h-48">
-                <div class="flex justify-between items-start">
-                    <div class="icon-box i-rose"><i data-lucide="ghost" class="w-5 h-5"></i></div>
-                    <i data-lucide="arrow-up-right" class="text-rose-400 w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
-                </div>
-                <div>
-                    <h3 class="font-bold text-zinc-100 mb-0.5">Pixel Surviver</h3>
-                    <p class="text-xs text-zinc-500">像素生存遊戲</p>
-                </div>
-            </a>
-
-            <!-- Tech Stack 小卡 -->
-            <div class="bento-card rounded-2xl p-6 flex flex-col justify-center h-48">
-                <p class="text-xs text-zinc-600 uppercase tracking-widest mb-3">Tech Stack</p>
-                <div class="flex flex-wrap gap-2">
-                    <span class="tag t-blue">HTML / CSS</span>
-                    <span class="tag t-amber">JavaScript</span>
-                    <span class="tag t-purple">C++</span>
-                    <span class="tag t-teal">GitHub Pages</span>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- 02 探究與研究 -->
-    <section id="humanities" class="pb-24 reveal">
-        <div class="flex items-center justify-between border-b sec-divider pb-5 mb-10">
-            <div class="flex items-center gap-4">
-                <span class="sec-num">02</span>
-                <h2 class="font-serif text-2xl md:text-3xl font-bold text-zinc-100">探究與研究</h2>
-            </div>
-            <span class="hidden md:block text-zinc-600 font-mono text-xs uppercase tracking-widest">Inquiry & Research</span>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-
-            <!-- AI 文學研究 大卡 -->
-            <div class="bento-card c-blue rounded-2xl p-7 lg:col-span-2 flex flex-col gap-5">
-                <div class="flex flex-wrap gap-2">
-                    <span class="tag t-purple">Generative AI</span>
-                    <span class="tag t-blue">Literature</span>
-                    <span class="tag t-teal">Prompt Engineering</span>
-                </div>
-                <div>
-                    <h3 class="font-serif text-xl font-bold text-zinc-100 mb-3">生成式 AI 在文學創作的應用研究</h3>
-                    <p class="text-zinc-400 text-sm leading-relaxed">
-                        以古詩詞與小說創作為題，深度測試 GPT-4 與 DeepSeek 等大型語言模型。透過建構角色設定模板與詠物詩格律等精準提示詞，分析 AI 在文字創作上的邏輯限制與潛力，展現對新興科技的批判性思考。
-                    </p>
-                </div>
-            </div>
-
-            <!-- 地質景觀 得獎 -->
-            <div class="bento-card awarded-card rounded-2xl p-7 flex flex-col justify-between">
-                <div>
-                    <div class="flex gap-2 mb-5">
-                        <span class="tag t-indigo">Awarded</span>
-                        <span class="tag">Geography</span>
-                    </div>
-                    <h3 class="font-serif text-lg font-bold text-zinc-100 mb-3">《北投硫穴記》<br>地景實察報告</h3>
-                    <p class="text-zinc-400 text-sm leading-relaxed">
-                        結合清代郁永河古文記載與現代地理實察，分析大屯火山群地貌變遷。
-                    </p>
-                </div>
-                <div class="pt-5 border-t border-indigo-900/40 mt-4">
-                    <p class="text-xs text-indigo-400/70 uppercase tracking-wider">第四屆臺灣地質公園學會讀景比賽 得獎</p>
-                </div>
-            </div>
-
-            <!-- 貓咪咖啡廳 -->
-            <div class="bento-card c-amber rounded-2xl p-7 flex flex-col gap-4">
-                <div class="flex flex-wrap gap-2">
-                    <span class="tag t-amber">Qualitative Research</span>
-                    <span class="tag t-green">Business</span>
-                </div>
-                <div>
-                    <h3 class="font-serif text-lg font-bold text-zinc-100 mb-2">貓咪咖啡廳經營策略分析</h3>
-                    <p class="text-zinc-400 text-sm leading-relaxed">
-                        實地質性訪談與觀察，比較北市兩間不同類型貓咖的客群輪廓、動物福利政策與商業模式，從社會現象中萃取商業洞察。
-                    </p>
-                </div>
-            </div>
-
-            <!-- 北投實察 -->
-            <div class="bento-card c-teal rounded-2xl p-7 flex flex-col gap-4">
-                <div class="flex flex-wrap gap-2">
-                    <span class="tag t-teal">Fieldwork</span>
-                    <span class="tag t-rose">History</span>
-                </div>
-                <div>
-                    <h3 class="font-serif text-lg font-bold text-zinc-100 mb-2">北投溫泉史與經貿實察</h3>
-                    <p class="text-zinc-400 text-sm leading-relaxed">
-                        北投溪沿線地熱谷生態工程考察、參訪證交所與四四南村，深化對台灣經濟發展與在地歷史的立體認知。
-                    </p>
-                </div>
-            </div>
-
-            <!-- 企業分析營隊 -->
-            <div class="bento-card c-green rounded-2xl p-7 flex flex-col gap-4">
-                <div class="flex flex-wrap gap-2">
-                    <span class="tag t-green">Business Strategy</span>
-                    <span class="tag t-blue">Finance</span>
-                </div>
-                <div>
-                    <h3 class="font-serif text-lg font-bold text-zinc-100 mb-2">企業策略與財報分析</h3>
-                    <p class="text-zinc-400 text-sm leading-relaxed">
-                        於管理學院營隊學習 MECE 分解法與金字塔邏輯。最終專案以「Netflix 併購華納兄弟案」進行商業個案分析，結合財務數據評估收購損益。
-                    </p>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- 03 榮譽與經歷 -->
-    <section id="achievements" class="pb-24 reveal">
-        <div class="flex items-center justify-between border-b sec-divider pb-5 mb-10">
-            <div class="flex items-center gap-4">
-                <span class="sec-num">03</span>
-                <h2 class="font-serif text-2xl md:text-3xl font-bold text-zinc-100">榮譽與經歷</h2>
-            </div>
-            <span class="hidden md:block text-zinc-600 font-mono text-xs uppercase tracking-widest">Honors & Activities</span>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-            <!-- 競賽榮譽 -->
-            <div class="bento-card c-amber rounded-2xl p-7">
-                <div class="flex items-center gap-3 mb-7">
-                    <div class="icon-box i-amber"><i data-lucide="trophy" class="w-4 h-4"></i></div>
-                    <h3 class="font-bold text-zinc-100 text-base">競賽與活動</h3>
-                </div>
-                <ul class="space-y-6">
-                    <li class="flex gap-4">
-                        <div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0"></div>
-                        <div>
-                            <h4 class="font-semibold text-zinc-200 text-sm">聯合盃作文大賽（臺北市初賽）</h4>
-                            <p class="text-zinc-500 text-xs mt-1">第18屆 高中職組 佳作</p>
-                        </div>
-                    </li>
-                    <li class="flex gap-4">
-                        <div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0"></div>
-                        <div>
-                            <h4 class="font-semibold text-zinc-200 text-sm">臺灣地質公園學會讀景比賽</h4>
-                            <p class="text-zinc-500 text-xs mt-1">第四屆 參賽作品《走進北投硫穴記》</p>
-                        </div>
-                    </li>
-                    <li class="flex gap-4">
-                        <div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-teal-400 shrink-0"></div>
-                        <div>
-                            <h4 class="font-semibold text-zinc-200 text-sm">臺灣大學管理學院營隊</h4>
-                            <p class="text-zinc-500 text-xs mt-1">財務報表分析、MECE 金字塔邏輯、商業個案分析</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- 班級職務 -->
-            <div class="bento-card c-purple rounded-2xl p-7">
-                <div class="flex items-center gap-3 mb-7">
-                    <div class="icon-box i-purple"><i data-lucide="users" class="w-4 h-4"></i></div>
-                    <h3 class="font-bold text-zinc-100 text-base">班級職務</h3>
-                </div>
-                <div class="space-y-5">
-                    <div class="pb-5 border-b border-zinc-800">
-                        <div class="flex justify-between items-start mb-2">
-                            <h4 class="font-semibold text-zinc-200 text-sm">國語文小老師</h4>
-                            <span class="text-xs text-zinc-600 font-mono shrink-0 ml-4">113上</span>
-                        </div>
-                        <p class="text-zinc-500 text-xs leading-relaxed">協助教務與班級語文學習進度，結合溝通協調與文字素養。</p>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card card-gold p-10 flex flex-col gap-7">
+                    <div class="flex flex-wrap gap-2"><span class="tag tag-gold">C++</span><span class="tag tag-rose">邏輯設計</span><span class="tag tag-ghost">AI 協作</span></div>
                     <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <h4 class="font-semibold text-zinc-200 text-sm">衛生股長</h4>
-                            <span class="text-xs text-zinc-600 font-mono shrink-0 ml-4">113下</span>
-                        </div>
-                        <p class="text-zinc-500 text-xs leading-relaxed">管理班級環境整潔，培養責任心與組織協調能力。</p>
+                        <h3 class="font-serif text-xl font-medium mb-5" style="color:var(--cream)">1A2B 猜數字</h3>
+                        <p class="body-t">經典邏輯推理遊戲的 C++ 實作。設計不重複四位數字的驗證規則與 A/B 計算核心邏輯，並設計完整防呆機制，體現對程式穩定性的嚴謹思考。</p>
                     </div>
+                    <span class="inline-flex items-center gap-2 mono-t"><i data-lucide="terminal" class="w-3.5 h-3.5"></i>Console Application</span>
+                </div>
+                <div class="flex flex-col gap-8">
+                    <a href="https://homosapiens-web.github.io/Miner-legend-/" target="_blank" class="card card-gold p-8 group game-mini">
+                        <div class="flex justify-between"><div class="ib ib-gold"><i data-lucide="pickaxe" class="w-4 h-4"></i></div><i data-lucide="arrow-up-right" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all" style="color:var(--gold)"></i></div>
+                        <div><h3 class="font-medium mb-2" style="color:var(--cream)">礦工傳說</h3><p class="small-t">向下挖掘，收集寶石、躲避危險，挑戰最深層地下城。</p></div>
+                    </a>
+                    <a href="https://homosapiens-web.github.io/Infinite-wordle/" target="_blank" class="card card-sage p-8 group game-mini">
+                        <div class="flex justify-between"><div class="ib ib-sage"><i data-lucide="spell-check" class="w-4 h-4"></i></div><i data-lucide="arrow-up-right" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all" style="color:var(--sage)"></i></div>
+                        <div><h3 class="font-medium mb-2" style="color:var(--cream)">Wordle 無限版</h3><p class="small-t">無次數限制，每次猜測後顯示顏色提示，在最少回合內猜出隱藏單字。</p></div>
+                    </a>
                 </div>
             </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <a href="https://homosapiens-web.github.io/Pixel-s-6/" target="_blank" class="card card-rose p-10 group game-mini">
+                    <div class="flex justify-between"><div class="ib ib-rose"><i data-lucide="ghost" class="w-4 h-4"></i></div><i data-lucide="arrow-up-right" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all" style="color:var(--dustyrose)"></i></div>
+                    <div><h3 class="font-medium mb-2" style="color:var(--cream)">Pixel Surviver</h3><p class="small-t">像素風格生存動作遊戲。操控角色閃避持續湧現的敵人浪潮，刷新個人最高生存時間。</p></div>
+                </a>
+                <div class="card card-neutral p-10 flex flex-col justify-between">
+                    <p class="mono-t uppercase mb-6">Tech Stack</p>
+                    <div class="flex flex-wrap gap-2"><span class="tag tag-sky">HTML / CSS</span><span class="tag tag-gold">JavaScript</span><span class="tag tag-gold">C++</span><span class="tag tag-sage">GitHub Pages</span></div>
+                    <p class="small-t mt-6">所有網頁遊戲均已部署上線，可直接於瀏覽器遊玩。</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- 04 文學創作 -->
-    <section id="writing" class="pb-32 reveal">
-        <div class="flex items-center justify-between border-b sec-divider pb-5 mb-10">
-            <div class="flex items-center gap-4">
+    <!-- ═══ 04 文學創作 ═══ -->
+    <section id="writing" class="pb-56 reveal">
+        <div class="flex items-center justify-between border-b sec-divider pb-7 mb-20">
+            <div class="flex items-center gap-5">
                 <span class="sec-num">04</span>
-                <h2 class="font-serif text-2xl md:text-3xl font-bold text-zinc-100">文學創作</h2>
+                <h2 class="font-serif text-2xl md:text-3xl font-light" style="color:var(--cream)">文學創作</h2>
             </div>
-            <span class="hidden md:block text-zinc-600 font-mono text-xs uppercase tracking-widest">Creative Writing</span>
+            <span class="hidden md:block mono-t uppercase tracking-widest">Creative Writing</span>
         </div>
-
-        <a href="https://www.penana.com/user/235367/%E9%99%BD%E5%A3%BD%E6%9C%A8%E9%AD%9A" target="_blank"
-           class="writing-card rounded-2xl p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden group block">
-            <div class="absolute right-0 top-0 w-80 h-80 rounded-full blur-3xl -mr-24 -mt-24 pointer-events-none"
-                 style="background:radial-gradient(circle,rgba(168,85,247,0.09),transparent)"></div>
-            <div class="flex items-start md:items-center gap-6 z-10">
-                <div class="icon-box i-indigo shrink-0" style="width:3.5rem;height:3.5rem;border-radius:1rem;padding:0">
-                    <i data-lucide="pen-tool" class="w-7 h-7"></i>
-                </div>
-                <div>
-                    <div class="flex items-center gap-3 mb-1.5">
-                        <h3 class="text-xl font-serif font-bold text-zinc-100">小說創作 — 陽壽木魚</h3>
-                        <span class="px-2 py-0.5 rounded text-[10px] uppercase tracking-wider bg-zinc-800 text-zinc-500 border border-zinc-700">Penana</span>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <a href="https://www.penana.com/user/235367/%E9%99%BD%E5%A3%BD%E6%9C%A8%E9%AD%9A" target="_blank"
+               class="writing-card p-10 flex flex-col justify-between gap-9 relative overflow-hidden group block">
+                <div class="absolute right-0 top-0 w-80 h-80 rounded-full blur-3xl -mr-24 -mt-24 pointer-events-none" style="background:radial-gradient(circle,rgba(200,169,110,0.06),transparent)"></div>
+                <div class="flex items-start gap-5 z-10">
+                    <div class="ib ib-gold shrink-0" style="width:3.2rem;height:3.2rem;border-radius:1.1rem"><i data-lucide="pen-tool" class="w-5 h-5"></i></div>
+                    <div>
+                        <div class="flex items-center gap-3 mb-5"><h3 class="font-serif text-xl font-medium" style="color:var(--cream)">陽壽木魚</h3><span class="tag tag-ghost">Penana</span></div>
+                        <p class="body-t">在 Penana 經營長篇小說創作，透過寫作鍛鍊文字表達能力與世界觀建構的邏輯。以教會體制為背景，結合 AI 協作實驗建構複雜的敘事架構。</p>
                     </div>
-                    <p class="text-zinc-400 text-sm font-light leading-relaxed">
-                        在 Penana 經營長篇小說創作，透過寫作鍛鍊文字表達能力與世界觀建構的邏輯。
-                    </p>
+                </div>
+                <div class="flex items-center justify-between z-10">
+                    <span class="small-t">長篇小說 · 奇幻世界觀</span>
+                    <span class="link-gold">前往閱讀 <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></span>
+                </div>
+            </a>
+            <div class="card card-rose p-10 flex flex-col gap-8">
+                <div class="flex items-start gap-5">
+                    <div class="ib ib-rose shrink-0" style="width:3.2rem;height:3.2rem;border-radius:1.1rem"><i data-lucide="moon" class="w-5 h-5"></i></div>
+                    <div>
+                        <div class="flex items-center gap-3 mb-5"><h3 class="font-serif text-xl font-medium" style="color:var(--cream)">一千個滿月前的心願</h3><span class="tag tag-rose">小說</span></div>
+                        <p class="body-t">以滿月為時間軸線串連的長篇小說，書寫跨越時代的心願與守候。文字兼具詩意意象與情節張力，展現對敘事結構的深刻掌握。</p>
+                    </div>
+                </div>
+                <div class="mt-auto pt-6 border-t" style="border-color:var(--border)">
+                    <p class="mono-t uppercase" style="color:var(--dustyrose)">長篇小說 · 個人創作</p>
                 </div>
             </div>
-            <div class="shrink-0 flex items-center gap-2 text-zinc-300 text-sm font-medium z-10 bg-zinc-800/60 px-5 py-3 rounded-xl border border-zinc-700 group-hover:bg-zinc-700 group-hover:border-purple-500/50 transition-all">
-                前往閱讀
-                <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
-            </div>
-        </a>
+        </div>
     </section>
 
 </main>
 
-<!-- Footer -->
-<footer class="relative z-10 py-10 text-center" style="border-top:1px solid rgba(63,63,70,0.3)">
-    <div class="max-w-6xl mx-auto px-6">
-        <p class="font-serif text-base text-zinc-400 mb-1">Peitong Wu · 吳霈彤</p>
-        <p class="text-xs text-zinc-600">薇閣高中 Wego High School, Taipei &nbsp;·&nbsp; 三年丙班</p>
+<footer class="relative z-10 py-20 text-center" style="border-top:1px solid var(--border)">
+    <div class="max-w-4xl mx-auto px-8">
+        <p class="font-serif text-lg mb-3" style="color:var(--muted)">吳霈彤 · Peitong Wu</p>
+        <p class="mono-t">薇閣高中 Wego High School, Taipei &nbsp;·&nbsp; 三年丙班</p>
     </div>
 </footer>
 
 <script>
     lucide.createIcons();
 
-    // Canvas 粒子背景
+    // ──── Theme toggle ────
+    const html = document.documentElement;
+    const btn = document.getElementById('theme-btn');
+    const iconSun = document.getElementById('icon-sun');
+    const iconMoon = document.getElementById('icon-moon');
+
+    // 🔧 修復1：預設強制 dark mode，不跟隨系統偏好
+    let isLight = false;
+
+    function applyTheme() {
+        html.classList.toggle('light', isLight);
+        iconSun.classList.toggle('hidden', !isLight);
+        iconMoon.classList.toggle('hidden', isLight);
+        updateOrbPalette();
+    }
+    applyTheme();
+
+    btn.addEventListener('click', () => { isLight = !isLight; applyTheme(); });
+
+    // ──── Canvas orbs ────
     const canvas = document.getElementById('canvas-bg');
     const ctx = canvas.getContext('2d');
-    let W, H, particles = [], mx = null, my = null;
+    let W, H, orbs = [], mx = null, my = null;
+    const DARK  = ['rgba(200,169,110,0.10)','rgba(138,171,150,0.08)','rgba(196,144,144,0.07)','rgba(122,174,200,0.09)','rgba(240,237,232,0.04)'];
+    const LIGHT = ['rgba(200,169,110,0.05)','rgba(138,171,150,0.04)','rgba(196,144,144,0.04)','rgba(122,174,200,0.05)','rgba(60,40,20,0.02)'];
+    let palette = DARK;
+    function updateOrbPalette() { palette = isLight ? LIGHT : DARK; orbs.forEach(o => o.c = palette[Math.floor(Math.random()*palette.length)]); }
 
     function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
     window.addEventListener('resize', resize); resize();
-    window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-    window.addEventListener('touchmove', e => { mx = e.touches[0].clientX; my = e.touches[0].clientY; });
-    window.addEventListener('mouseout', () => { mx = my = null; });
+    window.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+    window.addEventListener('mouseout', () => { mx=my=null; });
 
-    class P {
-        constructor() { this.reset(true); }
-        reset(init = false) {
-            this.x = Math.random() * W;
-            this.y = init ? Math.random() * H : H + 80;
-            this.r = Math.random() * 110 + 50;
-            this.vx = (Math.random() - 0.5) * 0.3;
-            this.vy = (Math.random() - 0.5) * 0.3 - 0.12;
-            const c = [
-                'rgba(99,102,241,0.13)',
-                'rgba(59,130,246,0.10)',
-                'rgba(168,85,247,0.10)',
-                'rgba(20,184,166,0.08)',
-                'rgba(244,63,94,0.07)',
-                'rgba(255,255,255,0.025)'
-            ];
-            this.c = c[Math.floor(Math.random() * c.length)];
+    class Orb {
+        constructor(init) { this.reset(init); }
+        reset(init=false) {
+            this.x=Math.random()*W; this.y=init?Math.random()*H:H+120;
+            this.r=Math.random()*170+90; this.vx=(Math.random()-0.5)*0.17; this.vy=-(Math.random()*0.13+0.04);
+            this.c=palette[Math.floor(Math.random()*palette.length)];
         }
         update() {
-            this.x += this.vx; this.y += this.vy;
-            if (mx !== null) {
-                const dx = mx - this.x, dy = my - this.y;
-                const d = Math.sqrt(dx*dx + dy*dy);
-                if (d < 320) { const f = (320-d)/320; this.x -= dx/d*f*1.2; this.y -= dy/d*f*1.2; }
-            }
-            if (this.y < -this.r) this.reset();
-            if (this.x < -this.r) this.x = W + this.r;
-            if (this.x > W + this.r) this.x = -this.r;
+            this.x+=this.vx; this.y+=this.vy;
+            if(mx!==null){const dx=mx-this.x,dy=my-this.y,d=Math.sqrt(dx*dx+dy*dy);if(d<370){const f=(370-d)/370*0.65;this.x-=dx/d*f;this.y-=dy/d*f;}}
+            if(this.y<-this.r)this.reset(); if(this.x<-this.r)this.x=W+this.r; if(this.x>W+this.r)this.x=-this.r;
         }
         draw() {
-            ctx.beginPath();
-            const g = ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.r);
-            g.addColorStop(0, this.c); g.addColorStop(1,'rgba(0,0,0,0)');
-            ctx.fillStyle = g; ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fill();
+            const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.r);
+            g.addColorStop(0,this.c); g.addColorStop(1,'rgba(0,0,0,0)');
+            ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
         }
     }
 
-    for (let i = 0; i < Math.floor(W/42); i++) particles.push(new P());
-    (function loop() {
-        ctx.clearRect(0,0,W,H);
-        particles.forEach(p => { p.update(); p.draw(); });
-        requestAnimationFrame(loop);
-    })();
+    const N=Math.max(12,Math.floor(W/56));
+    for(let i=0;i<N;i++) orbs.push(new Orb(true));
+    (function loop(){ ctx.clearRect(0,0,W,H); orbs.forEach(o=>{o.update();o.draw();}); requestAnimationFrame(loop); })();
 
-    // 3D 卡片傾斜
-    document.querySelectorAll('.bento-card, .writing-card').forEach(card => {
+    // ──── Card tilt ────
+    document.querySelectorAll('.card, .writing-card').forEach(card => {
         card.addEventListener('mousemove', e => {
-            const r = card.getBoundingClientRect();
-            const rx = ((e.clientY - r.top  - r.height/2) / r.height) * -5;
-            const ry = ((e.clientX - r.left - r.width/2)  / r.width)  *  5;
-            card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(1.015,1.015,1.015)`;
-            card.style.transition = 'transform 0.1s ease';
-            card.style.zIndex = '10';
+            const r=card.getBoundingClientRect();
+            const rx=((e.clientY-r.top-r.height/2)/r.height)*-3.2;
+            const ry=((e.clientX-r.left-r.width/2)/r.width)*3.2;
+            card.style.transform=`perspective(1100px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(1.009,1.009,1.009)`;
+            card.style.transition='transform 0.08s ease'; card.style.zIndex='10';
         });
         card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(900px) rotateX(0) rotateY(0) scale3d(1,1,1)';
-            card.style.transition = 'transform 0.5s ease';
-            card.style.zIndex = '1';
+            card.style.transform=''; card.style.transition='transform 0.65s cubic-bezier(0.16,1,0.3,1)'; card.style.zIndex='';
         });
     });
 
-    // Scroll Reveal
+    // ──── Scroll reveal ────
     const io = new IntersectionObserver(entries => {
-        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
-    }, { threshold: 0.08 });
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                io.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.05 });
+
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // 🔧 修復2：Hero section 頁面載入時直接顯示，不等 scroll
+    document.querySelector('section.reveal').classList.add('visible');
 </script>
 </body>
 </html>
